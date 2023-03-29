@@ -156,14 +156,14 @@
             <version>5.1.31</version>
         </dependency>
 	
-	<!-- 오라클 ojdbc -->
+	<!-- 오라클 ojdbc 
         <dependency>
             <groupId>ojdbc</groupId>
             <artifactId>ojdbc</artifactId>
             <version>6</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc6_g.jar</systemPath>
-        </dependency>
+        </dependency>-->
         
       <!-- jackson binding -->
       <dependency>
