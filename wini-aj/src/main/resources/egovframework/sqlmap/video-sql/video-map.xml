@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="video">
+
+<typeAlias  alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+<typeAlias  alias="fileVo" type="egovframework.yy.video.service.FileVO"/>
+<typeAlias  alias="ThumbVo" type="egovframework.yy.video.service.ThumbVO"/>	
+
+
+	<insert id="video.insBoard">
+	
+		INSERT INTO AA_VIDEO_BOARD
+			(
+			   BOARD_ID
+			 , TITLE
+			 , CONTENT
+			 , REG_DT
+			 , DEL_YN
+			)
+			VALUES
+			(
+			   BOARD_ID_SEQ.NEXTVAL
+			 , #title#
+			 , #content#
+			 , SYSDATE
+			 , 'N'
+			)
+			
+		<selectKey keyProperty="boardId" resultClass="java.lang.Integer" type="post">
+			SELECT BOARD_ID_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="video.insertFileInfo" parameterClass="fileVo">
+	
+		INSERT INTO AA_VIDEO 
+			(
+			   VIDEO_ID
+			 , REG_DT
+			 , DEL_YN
+			 , ORG_NM
+			 , SAVE_NM
+			 , SAVE_PATH
+			 , FILE_TYPE
+			 , BOARD_ID
+			)
+			VALUES
+			(
+			   VIDEO_ID_SEQ.NEXTVAL
+			 , SYSDATE
+			 , 'N'
+			 , #orgNm#
+			 , #saveNm#
+			 , #savePath#
+			 , #fileType#
+			 , #boardId#
+			)
+		
+	</insert>
+	
+	<insert id="video.insertThumb" parameterClass="ThumbVo">
+		
+		INSERT INTO AA_THUMBNAIL
+			(
+			   THUMBNAIL_ID
+			 , REG_DT
+			 , DEL_YN
+			 , ORG_NM
+			 , SAVE_NM
+			 , SAVE_PATH
+			 , FILE_TYPE
+			 , BOARD_ID
+			)
+			VALUES
+			(
+			   THUMBNAIL_ID_SEQ.NEXTVAL
+			 , SYSDATE
+			 , 'N'
+			 , #orgNm#
+			 , #saveNm#
+			 , #savePath#
+			 , #fileType#
+			 , #boardId#
+			)
+	</insert>
+	
+	<select id="video.getVideoInfo">
+		SELECT TITLE
+			,  ORG_NM
+			,  SAVE_PATH,
+			,  FILE_TYPE
+		FROM AA_VIDEO
+		WHERE VIDEO_ID = #videoId#
+	</select>
+	
+	<select id="video.getList" resultClass="egovMap">
+			
+	SELECT BOARD.BOARD_ID board_id
+			,  BOARD.TITLE title
+			,  BOARD.CONTENT content
+			,  THUMB.ORG_NM org_nm
+			,  THUMB.SAVE_PATH save_path
+			,  VIDEO.ORG_NM v_org_nm
+			,  VIDEO.SAVE_PATH v_save_path
+		FROM AA_VIDEO_BOARD BOARD
+		JOIN AA_THUMBNAIL THUMB
+		ON BOARD.BOARD_ID = THUMB.BOARD_ID 
+		JOIN AA_VIDEO VIDEO
+		ON BOARD.BOARD_ID = VIDEO.BOARD_ID
+	</select>
+	
+	
+
+</sqlMap>
